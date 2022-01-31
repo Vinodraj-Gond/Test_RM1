@@ -1,0 +1,5 @@
+- include: tf_plan.yml
+  tags: terraform
+
+- include: tf_apply.yml
+  tags: terraform

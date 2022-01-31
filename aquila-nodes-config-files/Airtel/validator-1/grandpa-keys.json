@@ -1,0 +1,10 @@
+{
+	"jsonrpc":"2.0",
+	"id":1,
+	"method":"author_insertKey",
+	"params": [
+	  "gran",
+	  "infant salmon buzz patrol maple subject turtle cute legend song vital leisure",
+	  "0x1a0e2bf1e0195a1f5396c5fd209a620a48fe90f6f336d89c89405a0183a857a3"
+	]
+}

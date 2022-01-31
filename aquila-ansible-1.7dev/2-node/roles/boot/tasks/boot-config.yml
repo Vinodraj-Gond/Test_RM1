@@ -1,0 +1,95 @@
+- name: create key dir
+  become: yes
+  file:
+    path: /aquila-node/config
+    state: directory
+    mode: '0777'
+    recurse: yes
+
+- name: generate aura keys
+  environment:
+    PATH: "{{ cargo_path }}"
+  shell: subkey generate --scheme sr25519 > /aquila-node/config/aura
+
+- name: copy phrase script
+  become: yes
+  copy:
+    src: phrase.sh
+    dest: /aquila-node/config
+    mode: '0755'
+    
+- name: get phrase
+  become: yes
+  shell: ./phrase.sh aura
+  register: phrase
+  args:
+    chdir: /aquila-node/config
+
+- name: generate grandpa keys
+  environment:
+    PATH: "{{ cargo_path }}"
+  shell: subkey inspect --scheme ed25519 "{{phrase.stdout}}" > /aquila-node/config/gran
+
+- name: generate network keys
+  environment:
+    PATH: "{{ cargo_path }}"
+  shell: subkey generate-node-key --file networking-keys
+  register: network_keys
+  args:
+    chdir: /aquila-node/config
+
+- name: save network keys
+  become: yes
+  shell: echo {{network_keys.stderr}} > peerid
+  args:
+    chdir: /aquila-node/config
+
+- name: copy transform script
+  become: yes
+  copy:
+    src: transform.sh
+    dest: /aquila-node/config
+    mode: '0755'
+    
+- name: transform aura keys
+  become: yes
+  shell: ./transform.sh aura > aura-keys.json
+  args:
+    chdir: /aquila-node/config
+
+- name: transform gran keys
+  become: yes
+  shell: ./transform.sh gran > grandpa-keys.json
+  args:
+    chdir: /aquila-node/config
+
+- name: download chainspec
+  become: yes
+  get_url:
+    url: "{{ chain_spec_uri }}"
+    dest: /aquila-node/config/chainSpec.json
+    mode: '0444'
+
+- name: ouput network keys
+  fetch:
+    src: /aquila-node/config/networking-keys
+    dest: "{{ playbook_dir }}/../output-network-keys.txt"
+    flat: yes
+
+- name: ouput peerid
+  fetch:
+    src: /aquila-node/config/peerid
+    dest: "{{ playbook_dir }}/../output-peerid.txt"
+    flat: yes
+
+- name: ouput gran
+  fetch:
+    src: /aquila-node/config/gran
+    dest: "{{ playbook_dir }}/../output-gran.txt"
+    flat: yes
+
+- name: ouput aura
+  fetch:
+    src: /aquila-node/config/aura
+    dest: "{{ playbook_dir }}/../output-aura.txt"
+    flat: yes

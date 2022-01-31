@@ -1,0 +1,2 @@
+- include: tf_destroy.yml
+  tags: destroy

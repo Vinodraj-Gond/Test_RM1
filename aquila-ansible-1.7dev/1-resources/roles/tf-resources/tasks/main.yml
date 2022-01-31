@@ -1,0 +1,5 @@
+- include: tf_plan.yml
+  tags: plan
+
+- include: tf_apply.yml
+  tags: apply

@@ -1,0 +1,6 @@
+- name: authenticate docker ecr
+  shell: aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws
+
+- name: pull aquila pqs image
+  become: yes
+  shell: docker pull {{ aquila_pqs_image }}

@@ -1,0 +1,5 @@
+- include: boot-config.yml
+  tags: boot
+
+- include: boot-pqs.yml
+  tags: boot

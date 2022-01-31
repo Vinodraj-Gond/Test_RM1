@@ -1,0 +1,8 @@
+- include: ssh-perm.yml
+  tags: ssh
+
+- include: ssh-refresh.yml
+  tags: ssh
+
+- include: ssh-wait.yml
+  tags: ssh

@@ -1,0 +1,5 @@
+# helm upgrade cert-manager cert-manager  -n cert-manager -f values.yaml
+# helm install cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true --version v1.0.3 -f values.yaml
+webhook:
+  securePort: 10240
+  hostNetwork: true

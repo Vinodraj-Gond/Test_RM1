@@ -1,0 +1,28 @@
+- name: install rustup 
+  shell: curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+
+- name: add cargo to path
+  become: yes
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    backrefs: yes
+    regexp: 'PATH=(["]*)((?!.*?/home/ubuntu/.cargo/bin).*?)(["]*)$'
+    line: "PATH=\\1\\2:/home/ubuntu/.cargo/bin\\3"
+
+- name: output path
+  register: path_output
+  shell: echo $PATH
+
+- name: set fact
+  set_fact:
+    cargo_path: "/home/ubuntu/.cargo/bin:{{ path_output.stdout_lines }}"
+
+- name: download subkey dependencies
+  shell: curl https://getsubstrate.io -sSf | bash -s -- --fast
+
+- name: install subkey
+  register: subkey_output
+  environment:
+    PATH: "{{ cargo_path }}"
+  shell: cargo install --force subkey --git https://github.com/paritytech/substrate --version 2.0.1 --locked

@@ -1,0 +1,19 @@
+- name: docker-run
+  template: 
+    src: docker-run.j2
+    dest: /aquila-node/config/docker-run.sh
+  vars:
+    NODE_NAME: "{{ node_name }}"
+    AQUILA_IP:  "{{ item }}"
+    BOOT_NODES: "{{ aqilliz_addr }}"
+  with_items: "{{ groups.aquila_addr }}"
+
+- name: change docker-run perm
+  become: yes
+  file:
+    path: /aquila-node/config/docker-run.sh
+    mode: '0755'
+
+- name: run image
+  become: yes
+  shell: docker run -d --restart unless-stopped -v /aquila-node/config:/aquila-node/config -v /aquila-node/node:/aquila-node/node -p 8044:9944 -p 8033:9933 -p 8333:30333 -p 8615:9615 {{ aquila_image }}

@@ -1,0 +1,25 @@
+- name: install unzip
+  become: yes
+  apt:
+    pkg:
+    - unzip
+
+- name: uninstall aws cli if it exist
+  become: yes
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+  - "/usr/local/bin/aws"
+  - "/usr/local/bin/aws_completer"
+  - "/usr/local/aws-cli"
+
+- name: pull aws cli
+  shell: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+- name: unzip aws
+  command: unzip -o awscliv2.zip
+
+- name: install aws cli
+  become: yes
+  shell: ./aws/install

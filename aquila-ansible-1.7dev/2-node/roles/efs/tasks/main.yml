@@ -1,0 +1,8 @@
+- include: efs-dir.yml
+  tags: efs
+
+- include: efs-helper.yml
+  tags: efs
+
+- include: efs-mount.yml
+  tags: efs

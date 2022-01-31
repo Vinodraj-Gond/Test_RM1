@@ -1,0 +1,14 @@
+- name: create terraform config
+  template: 
+    src: terraform.j2
+    dest: "{{ playbook_dir }}/../config/terraform.tfvars"
+  vars:
+    HOSTED_ZONE: "{{ r53_hosted_zone_id }}"
+    DOMAIN:  "{{ domain }}"
+    REGION: "{{ region }}"
+    AMI: "{{ ami }}"
+    VPC_ID: "{{ vpc_id }}"
+    PRIVATE_SUBNET_ID: "{{ private_subnet_id }}"
+    PUBLIC1_SUBNET_ID: "{{ public1_subnet_id }}" 
+    PUBLIC2_SUBNET_ID: "{{ public2_subnet_id }}"
+    CERTIFICATE_ARN: "{{ certificate_arn }}"

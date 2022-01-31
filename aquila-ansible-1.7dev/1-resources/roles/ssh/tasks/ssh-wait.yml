@@ -1,0 +1,11 @@
+- name: wait for SSH to come up
+  register: result
+  local_action: wait_for 
+                host={{ item }}
+                port=22 
+                state=started
+  with_items: "{{ groups.aquila }}"
+
+- name: wait for SSH to come up result
+  debug:
+    var: result

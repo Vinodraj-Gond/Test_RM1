@@ -1,0 +1,7 @@
+- name: change SSH private key permission
+  register: result
+  file: dest={{ tfBlockchainNodeDir }}/aquila_pk.pem mode=400
+
+- name: change SSH private key permission result
+  debug: 
+    var: result

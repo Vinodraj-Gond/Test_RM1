@@ -1,0 +1,8 @@
+- include: install-essential.yml
+  tags: essential
+
+- include: install-nginx.yml
+  tags: nginx
+
+- include: install-certbot.yml
+  tags: certbot

@@ -1,0 +1,11 @@
+[local]
+localhost
+
+[aquila]
+${ip_addr} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=terraform/blockchain-node/aquila_pk.pem
+
+[aquila_addr]
+${ip_addr}
+
+[efs]
+${efs_id}

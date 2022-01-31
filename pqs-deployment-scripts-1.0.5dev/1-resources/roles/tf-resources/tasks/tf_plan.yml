@@ -1,0 +1,12 @@
+- name: terraform plan
+  register: plan_result
+  terraform:
+    plan_file: "{{ tfDir }}/{{ tfPlanFile }}"
+    force_init: true
+    project_path: "{{ tfDir }}"
+    state: planned
+    variables_file: "{{ tfVarsFile }}"
+
+- name: terraform plan result
+  debug:
+    msg: "{{ plan_result.stdout_lines | regex_replace('\\n', '\n') }}"

@@ -1,0 +1,10 @@
+{
+	"jsonrpc":"2.0",
+	"id":1,
+	"method":"author_insertKey",
+	"params": [
+	  "aura",
+	  "infant salmon buzz patrol maple subject turtle cute legend song vital leisure",
+	  "0x0a11c9bcc81f8bd314e80bc51cbfacf30eaeb57e863196a79cccdc8bf4750d21"
+	]
+}

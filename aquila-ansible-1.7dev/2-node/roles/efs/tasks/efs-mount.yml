@@ -1,0 +1,20 @@
+- name: mount efs
+  register: result
+  become: yes
+  shell: mount -t efs -o tls {{ item }}:/ /aquila-node
+  with_items: "{{ groups.efs }}"
+
+- name: mount efs result
+  debug:
+    var: result
+
+- name: add entry to fstab
+  # file-system-id:/ efs-mount-point efs _netdev,noresvport,tls,iam 0 0
+  become: yes
+  with_items: "{{ groups.efs }}"
+  blockinfile:
+    path: "/etc/fstab"
+    backup: yes
+    insertafter: EOF
+    content: |
+      {{ item }}:/ /aquila-node efs _netdev,noresvport,tls,iam 0 0

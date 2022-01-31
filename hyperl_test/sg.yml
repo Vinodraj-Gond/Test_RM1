@@ -1,0 +1,90 @@
+# aws cloudformation deploy --stack-name mumbai-substrate-security-group --template-file=substrate-security-group.yaml --region=ap-south-1 --capabilities "CAPABILITY_AUTO_EXPAND" "CAPABILITY_NAMED_IAM" "CAPABILITY_IAM" --profile=dev
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Cloudformation for creating security group
+
+Resources:
+  SubstrateSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName}SubstrateSecurityGroup
+      VpcId:
+        Fn::ImportValue: eksctl-sg-fqsa-cluster::VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 8033
+        ToPort: 8033
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 8044
+        ToPort: 8044
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 8333
+        ToPort: 8333
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 8615
+        ToPort: 8615
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 30333
+        ToPort: 30333
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 9615
+        ToPort: 9615
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 9933
+        ToPort: 9933
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 9944
+        ToPort: 9944
+        CidrIp: 0.0.0.0/0
+
+  EfsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName}EfsSecurityGroup
+      VpcId:
+        Fn::ImportValue: eksctl-sg-fqsa-cluster::VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 2049
+        ToPort: 2049
+        CidrIp: 10.0.0.0/16
+
+  KubeAllocateEipPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Sub ${AWS::StackName}-substrate-kube-allocate-eip
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+            - ec2:AssociateAddress
+            - ec2:DisassociateAddress
+            Resource: '*'
+
+Outputs:
+  SubstrateSecurityGroupId:
+    Value: !GetAtt SubstrateSecurityGroup.GroupId
+    Export:
+      Name: !Sub ${AWS::StackName}-SubstrateSecurityGroupId
+
+  EfsSecurityGroupId:
+    Value: !GetAtt EfsSecurityGroup.GroupId
+    Export:
+      Name: !Sub ${AWS::StackName}-EfsSecurityGroupId
+
+  KubeAllocateEipPolicyArn:
+    Value: !Ref KubeAllocateEipPolicy
+    Export:
+      Name: !Sub ${AWS::StackName}-KubeAllocateEipPolicyArn

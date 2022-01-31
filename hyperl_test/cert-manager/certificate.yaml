@@ -1,0 +1,26 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-api-godscilla-com-staging
+  namespace: shared-certs
+spec:
+  secretName: wildcard-api-godscilla-com-staging
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+  - '*.staging.aqilliz.com'
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-api-godscilla-com-prod
+  namespace: shared-certs
+spec:
+  secretName: wildcard-api-godscilla-com-prod
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - '*.staging.aqilliz.com'

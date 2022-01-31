@@ -1,0 +1,38 @@
+- name: update and upgrade apt
+  become: yes
+  apt: 
+    state: latest 
+    update_cache: yes
+    upgrade: "yes"
+
+- name: install nginx
+  become: yes
+  apt:
+    pkg:
+    - nginx
+    
+    
+- name: uncommenting a server tokens off in nginx.conf
+  become: yes
+  replace:
+    path: /etc/nginx/nginx.conf
+    regexp: '# server_tokens off;'
+    replace: 'server_tokens off;'
+
+# - name: snap install core
+#   become: true
+#   shell: |
+#     snap install core
+#     snap refresh core
+
+# - name: remove potential conflicting versions of certbot
+#   become: yes
+#   apt:
+#     name: certbot
+#     state: absent
+
+# - name: install certbot
+#   register: certbot_install_output
+#   become: yes
+#   shell: snap install --classic certbot
+

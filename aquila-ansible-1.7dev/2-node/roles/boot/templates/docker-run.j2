@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# ==================== BOOT THE NODE======================================
+
+FILE=/aquila-node/config/chainSpecRaw.json
+if test -f "$FILE"; then
+    echo "chainSpecRaw.json provided"
+else
+  /aquila-node/target/release/node-template build-spec --chain=/aquila-node/config/chainSpec.json --raw --disable-default-bootnode > /aquila-node/config/chainSpecRaw.json
+fi
+
+nohup /aquila-node/target/release/node-template \
+    --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+    --base-path /aquila-node/node \
+    --chain=/aquila-node/config/chainSpecRaw.json \
+    --port 30333 \
+    --ws-port 9944 \
+    --rpc-port 9933 \
+    --prometheus-port 9615 \
+    --prometheus-external \
+    --rpc-cors all \
+    --validator \
+    --pruning 256 \
+    --unsafe-pruning \
+    --ws-external \
+    --rpc-external \
+    --rpc-methods=Unsafe \
+    --node-key-file /aquila-node/config/networking-keys \
+    --no-mdns \
+    --force-authoring \
+    --public-addr /ip4/{{ AQUILA_IP }}/tcp/30333 \
+    --bootnodes {{ BOOT_NODES }} \
+    --name {{ NODE_NAME }} &
+
+sleep 5
+
+curl http://localhost:9933 -H "Content-Type:application/json;charset=utf-8" -d "@/aquila-node/config/aura-keys.json"
+
+curl http://localhost:9933 -H "Content-Type:application/json;charset=utf-8" -d "@/aquila-node/config/grandpa-keys.json"
+
+kill $(ps aux | grep '[t]arget/release/node-template' | awk '{print $2}')
+
+rm -rf ./aquila-node/config/aura-keys.json
+
+rm -rf ./aquila-node/config/grandpa-keys.json
+
+/aquila-node/target/release/node-template \
+    --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+    --base-path /aquila-node/node \
+    --chain=/aquila-node/config/chainSpecRaw.json \
+    --port 30333 \
+    --ws-port 9944 \
+    --rpc-port 9933 \
+    --prometheus-port 9615 \
+    --prometheus-external \
+    --rpc-cors all \
+    --validator \
+    --pruning 256 \
+    --unsafe-pruning \
+    --ws-external \
+    --rpc-external \
+    --rpc-methods=Unsafe \
+    --node-key-file /aquila-node/config/networking-keys \
+    --no-mdns \
+    --force-authoring \
+    --public-addr /ip4/{{ AQUILA_IP }}/tcp/30333 \
+    --bootnodes {{ BOOT_NODES }} \
+    --name {{ NODE_NAME }}

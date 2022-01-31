@@ -1,0 +1,10 @@
+- gather_facts: false
+  vars_files:
+  - ./../config/ansible.yml
+  - ./../terraform/aws/output-pg.yml
+  hosts: aquila_pqs
+  roles:
+  - check
+  - docker
+  - boot
+  - network

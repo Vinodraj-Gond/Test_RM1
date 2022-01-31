@@ -1,0 +1,7 @@
+- name: refresh inventory
+  meta: refresh_inventory
+  register: result
+
+- name: refresh inventory result
+  debug:
+    var: result

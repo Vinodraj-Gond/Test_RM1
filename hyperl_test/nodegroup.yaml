@@ -1,0 +1,75 @@
+# eksctl create nodegroup --config-file=nodegroup.yaml
+# eksctl scale nodegroup --cluster=mumbaidev --nodes=1 --name=worker-public-xlarge-general
+# TODO - Create and update security groups!
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: sg-fqsa
+  region: ap-south-1
+
+nodeGroups:
+- name: worker-public-xlarge-general
+  instanceType: t2.xlarge
+  desiredCapacity: 0
+  minSize: 0
+  maxSize: 10
+  privateNetworking: false
+  ami: auto
+  labels:
+    project: general
+  tags:
+    k8s.io/cluster-autoscaler/node-template/label/project: general
+    project: general
+  ssh:
+    publicKeyName: staging-new
+  iam:
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+      - arn:aws:iam::730617358154:policy/substrate-security-group-staging12-substrate-kube-allocate-eip
+    withAddonPolicies:
+      autoScaler: true
+      certManager: true
+      cloudWatch: true
+      ebs: true
+      efs: true
+      imageBuilder: true
+  securityGroups:
+    attachIDs:
+      # security group which holds exposed ports required by substrate
+      - sg-005f80288d68f39a8
+      - sg-0173db7b43f16ded2
+
+- name: worker-public-xlarge-airtel
+  instanceType: t2.xlarge
+  desiredCapacity: 0
+  minSize: 0
+  maxSize: 10
+  privateNetworking: false
+  ami: auto
+  labels:
+    project: airtel
+  tags:
+    k8s.io/cluster-autoscaler/node-template/label/project: airtel
+    project: airtel
+  ssh:
+    publicKeyName: staging-new
+  iam:
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+      - arn:aws:iam::730617358154:policy/substrate-security-group-staging12-substrate-kube-allocate-eip
+    withAddonPolicies:
+      autoScaler: true
+      certManager: true
+      cloudWatch: true
+      ebs: true
+      efs: true
+      imageBuilder: true
+  securityGroups:
+    attachIDs:
+      # security group which holds exposed ports required by substrate
+      - sg-005f80288d68f39a8
+      - sg-0173db7b43f16ded2

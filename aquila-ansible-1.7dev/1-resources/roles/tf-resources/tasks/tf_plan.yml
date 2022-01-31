@@ -1,0 +1,12 @@
+- name: "terraform plan"
+  register: plan_result
+  terraform:
+    plan_file: "{{ tfBlockchainNodeDir }}/{{ tfPlanFile }}"
+    force_init: true
+    project_path: "{{ tfBlockchainNodeDir }}"
+    state: planned
+    variables_file: "{{ tfVarsFile }}"
+
+- name: terraform plan result
+  debug:
+    var: plan_result.stdout_lines

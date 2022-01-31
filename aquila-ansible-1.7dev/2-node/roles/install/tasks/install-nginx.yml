@@ -1,0 +1,89 @@
+- name: install nginx
+  become: yes
+  apt:
+    pkg:
+    - nginx
+
+- name: install nginx-extras 
+  become: yes
+  apt: name=nginx-extras state=latest
+  
+- name: Inserting a line after a pattern in nginx.conf 
+  become: yes
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: more_clear_headers Server;
+    insertafter: types_hash_max_size 2048;
+    
+    
+- name: uncommenting a server tokens off in nginx.conf
+  become: yes
+  replace:
+    path: /etc/nginx/nginx.conf
+    regexp: '# server_tokens off;'
+    replace: 'server_tokens off;'
+
+- name: insert stream into nginx.conf
+  become: yes
+  blockinfile:
+    path: "/etc/nginx/nginx.conf"
+    backup: yes
+    insertafter: EOF
+    block: |
+      stream {
+        server {
+          listen 30333;
+          proxy_pass localhost:8333;
+        }
+      }
+
+- name: create domain specific conf in /etc/nginx/conf.d/
+  become: yes
+  copy:
+    dest: "/etc/nginx/conf.d/{{ domain }}.conf"
+    content: |
+      server {
+        listen 9933;
+        server_name {{ domain }};
+        root /var/www/{{ domain }};
+        index index.html index.htm;
+        location / {
+            access_log off;
+            proxy_pass http://127.0.0.1:8033;
+        }
+      }
+
+      server {
+        listen 9944;
+        server_name {{ domain }};
+        root /var/www/{{ domain }};
+        index index.html index.htm;
+        location / {
+            access_log off;
+            proxy_pass http://127.0.0.1:8044;
+        }
+      }
+
+      server {
+        listen 9615;
+        server_name {{ domain }};
+        root /var/www/{{ domain }};
+        index index.html index.htm;
+        location / {
+            access_log off;
+            proxy_pass http://127.0.0.1:8615;
+        }
+      }
+      
+      
+- name: modify index.nginx-debian.html
+  become: yes
+  copy: 
+    content: 'working' 
+    dest: /var/www/html/index.nginx-debian.html
+
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: restarted

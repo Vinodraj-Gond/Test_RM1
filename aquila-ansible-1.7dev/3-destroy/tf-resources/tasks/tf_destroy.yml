@@ -1,0 +1,18 @@
+- name: "terraform destroy"
+  register: absent_result
+  terraform:
+    plan_file: "{{ tfBlockchainNodeDir }}/{{ tfPlanFile }}"
+    project_path: "{{ tfBlockchainNodeDir }}"
+    state: absent
+    variables_file: "{{ tfVarsFile }}"
+
+- name: terraform destroy result
+  debug:
+    var: absent_result.stdout_lines
+
+- name: recreating default hosts file
+  copy:
+    dest: "{{ tfBlockchainNodeDir }}/hosts"
+    content: |
+      [local]
+      localhost

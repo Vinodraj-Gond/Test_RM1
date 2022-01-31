@@ -1,0 +1,37 @@
+ #the following config in this section
+
+# Example - remember to update dev_certificate to False when running in production,
+# this will allow certbot to request production SSL certificate from Let's Encrypt
+#
+# domain: substrate.api.aqilliz.com
+# certbot_admin_email: admin@aqilliz.com
+# dev_certificate: True
+# r53_hosted_zone_id: Z06042016IMPHW5OG360
+# region: us-east-1
+# ami: ami-02fe94dee086c0c37
+# node_name: aqilliz
+# clear_efs: False
+# vpc_id: vpc-07ca622019c4cafc1
+domain: hyprtest.web.staging.aqilliz.com
+certbot_admin_email: infra@aqilliz.com
+dev_certificate: False
+r53_hosted_zone_id: Z0813970398YL8QZHPNEJ
+region: ap-south-1
+ami: ami-04bde106886a53080
+node_name: hyprtest
+clear_efs: False
+vpc_id: vpc-0c1f33c486fdf757e
+private_subnet_id: subnet-0d1c614fe3c7cfe27
+public1_subnet_id: subnet-0ab34724eac5f1cf5
+public2_subnet_id: subnet-0fdf1a1237d797e3e
+certificate_arn: arn:aws:acm:ap-south-1:730617358154:certificate/22761926-e99a-4bdb-ae80-d756de714edb
+
+# Default parameters provided by Aqilliz
+chain_spec_uri: "https://aquila-node-chain-specs.s3.ap-southeast-1.amazonaws.com/airtel/chainSpec.json"
+aqilliz_addr: "/ip4/13.232.243.248/tcp/30333/p2p/12D3KooWDeyKmW2ri7qsR19eL6FdgHeJ517U8KLrQHqepy229KhR"
+aquila_image: public.ecr.aws/aqilliz/aquila-substrate-node:v2.0.0
+tfBlockchainNodeDir: "{{playbook_dir}}/../terraform/blockchain-node"
+tfControlNodeDir: "{{playbook_dir}}/../terraform/control-node"
+tfVarsFile: "{{playbook_dir}}/../config/terraform.tfvars"
+tfPlanFile: plan.tfplan
+ansible_python_interpreter: python3

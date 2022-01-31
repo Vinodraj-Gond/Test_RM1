@@ -1,0 +1,7 @@
+- name: ping
+  register: result
+  action: ping
+
+- name: ping result
+  debug:
+    msg: result

@@ -1,0 +1,8 @@
+- include: boot-subkey.yml
+  tags: boot-subkey
+
+- include: boot-config.yml
+  tags: boot-config
+
+- include: boot-node.yml
+  tags: boot-node

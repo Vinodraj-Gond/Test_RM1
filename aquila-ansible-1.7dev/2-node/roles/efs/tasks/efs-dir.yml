@@ -1,0 +1,21 @@
+- name: stop efs nfs
+  become: yes
+  shell: lsof +D aquila-node/ | awk '{print $2}' | tail -n +2 | xargs -r kill -9
+  when: clear_efs | bool
+
+- name: clear efs dir
+  register: efs_clear
+  become: yes
+  shell: rm -rf /aquila-node/*
+  when: clear_efs | bool
+
+- name: clear efs dir
+  debug:
+    var: efs_clear.stdout_lines
+
+- name: create efs dir
+  become: yes
+  file:
+    path: /aquila-node/
+    state: directory
+    mode: '0755'

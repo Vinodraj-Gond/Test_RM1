@@ -1,0 +1,13 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dummy-load-certificates
+  namespace: shared-certs
+spec:
+  tls:
+  - hosts:
+    - "*.staging.aqilliz.com"
+    secretName: wildcard-api-godscilla-com-prod
+  rules:
+  - host: "*.staging.aqilliz.com"

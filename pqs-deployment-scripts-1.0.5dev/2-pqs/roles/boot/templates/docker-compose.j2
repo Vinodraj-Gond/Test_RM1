@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  pqs:
+    restart: unless-stopped
+    ports:
+        - '127.0.0.1:8080:8080'
+    image: {{ aquila_pqs_image }}
+    environment:
+      - ENV_TYPE={{ env_type }}
+      - AUTH0_AUD={{ auth0_aud }}
+      - AUTH0_ISS={{ auth0_iss }}
+      - PG_HOSTNAME={{ postgres_addr }}
+      - PG_PORT=5432
+      - PG_USER={{ db_username }}
+      - PG_PASSWORD={{ db_password }}
+      - PG_DB_NAME={{ db_name }}
+      - VAULT_ID={{ organization_name }}
+      - FIMP_BUFFER_SIZE_DB_READ=25000
+      - FIMP_BUFFER_SIZE_DB_WRITE=25000
+      - FIMP_SSL_MODE=True
+      - NODE_ADDR={{ node_addr }}
+      - SECRET_SEED={{ secret_seed }}
+      - AWS_REGION={{ region }}
+      - ACTIVATION_DEST_BUCKET={{ activation_dest_bucket }}
+      - ACTIVATION_DEST_BUCKET_REGION={{ activation_dest_bucket_region }}

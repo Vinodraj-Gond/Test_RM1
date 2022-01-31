@@ -1,0 +1,26 @@
+- name: apt-get update
+  become: yes
+  apt:
+    upgrade: 'yes'
+    update_cache: 'yes'
+
+- name: install git and binutils
+  become: yes
+  apt:
+    pkg:
+    - git
+    - binutils
+
+- name: clone git aws efs-utils
+  become: yes
+  git:
+    repo: 'https://github.com/aws/efs-utils.git'
+    dest: '/tmp/aws-efs-utils'
+
+- name: go to aws-efs-utils dir
+  become: yes
+  command:  chdir=/tmp/aws-efs-utils/ ./build-deb.sh
+
+- name: install efs-utils .deb package
+  become: yes
+  shell: apt-get install /tmp/aws-efs-utils/build/amazon-efs-utils*deb -y

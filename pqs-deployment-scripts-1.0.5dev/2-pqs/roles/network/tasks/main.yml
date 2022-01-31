@@ -1,0 +1,9 @@
+- include: network-install.yml
+  tags: network
+
+- include: network-nginx.yml
+  tags: network
+
+- include: network-cert.yml
+  tags: network
+

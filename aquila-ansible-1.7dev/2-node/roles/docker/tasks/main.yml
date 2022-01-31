@@ -1,0 +1,9 @@
+- include: docker-install.yml
+  tags: docker
+
+- include: docker-ecr.yml
+  tags: docker
+
+- include: docker-pull.yml
+  tags: docker
+

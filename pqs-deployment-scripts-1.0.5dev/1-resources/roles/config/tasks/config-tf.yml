@@ -1,0 +1,4 @@
+- name: create terraform config
+  template: 
+    src: terraform.j2
+    dest: "{{ playbook_dir }}/../config/terraform.tfvars"

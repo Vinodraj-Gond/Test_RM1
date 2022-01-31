@@ -1,0 +1,10 @@
+- gather_facts: false
+  vars_files:
+  - ./../config/ansible.yml
+  hosts: aquila
+  roles:
+  - check
+  - docker
+  - efs
+  - install
+  - boot

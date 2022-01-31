@@ -1,0 +1,27 @@
+region = "{{ region }}"
+vpc_id ="{{ vpc_id }}"
+private1_subnet_id = "{{ private1_subnet_id }}"
+private2_subnet_id = "{{ private2_subnet_id }}"
+public1_subnet_id = "{{ public1_subnet_id }}"
+public2_subnet_id = "{{ public2_subnet_id }}"
+
+db_instance_class = "{{ db_instance_class }}"
+db_name = "{{ db_name }}"
+db_username = "{{ db_username }}"
+db_password = "{{ db_password }}"
+db_allocated_storage = {{ db_allocated_storage }}
+db_max_allocated_storage = {{ db_max_allocated_storage }}
+
+r53_hosted_zone_id = "{{ r53_hosted_zone_id }}"
+r53_domain = "{{ domain }}"
+ami = "{{ ami }}"
+lb_name = "{{ lb_name }}"
+lb_arn = "{{ lb_arn }}"
+listener_arn = "{{ listener_arn }}"
+activation_dest_bucket = "{{ activation_dest_bucket }}"
+activation_dest_bucket_region = "{{ activation_dest_bucket_region }}"
+
+instance_type = "t2.xlarge"
+ec2_root_volume_type = "gp2"
+ec2_root_volume_size = 40
+

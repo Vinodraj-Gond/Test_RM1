@@ -1,0 +1,10 @@
+{
+	"jsonrpc":"2.0",
+	"id":1,
+	"method":"author_insertKey",
+	"params": [
+	  "aura",
+	  "point wink roof cage unlock vibrant view health law dinner render exist",
+	  "0x7aec52b34cde9c25a6d66a615df4645135fd2a4c0f529e9ce49cbfc7c4e6d1a1"
+	]
+}

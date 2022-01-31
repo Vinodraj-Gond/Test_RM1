@@ -1,0 +1,9 @@
+- gather_facts: false
+  hosts: local
+  connection: local
+  vars_files:
+  - ./../config/ansible.yml
+  roles:
+  - config
+  - tf-resources
+  - ssh

@@ -1,0 +1,12 @@
+- name: "terraform apply"
+  register: apply_result
+  terraform:
+    plan_file: "{{ tfBlockchainNodeDir }}/{{ tfPlanFile }}"
+    project_path: "{{ tfBlockchainNodeDir }}"
+    state: present
+    variables_file: "{{ tfVarsFile }}"
+
+- name: terraform apply result
+  debug:
+    var: apply_result.stdout_lines
+

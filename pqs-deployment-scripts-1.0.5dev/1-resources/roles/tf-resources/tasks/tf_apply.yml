@@ -1,0 +1,12 @@
+- name: terraform apply
+  register: apply_result
+  terraform:
+    plan_file: "{{ tfDir }}/{{ tfPlanFile }}"
+    project_path: "{{ tfDir }}"
+    state: present
+    variables_file: "{{ tfVarsFile }}"
+
+- name: terraform apply result
+  debug:
+    msg: "{{ apply_result.stdout_lines | regex_replace('\\n', '\n') }}"
+
